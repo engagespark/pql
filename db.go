@@ -1176,6 +1176,12 @@ func (db *DB) complexKind(oid uint32, args ...string) (Valstructor, error) {
 					return HStore, nil
 				}
 				return HStore, nil
+			case "tsvector":
+				typs[oid] = func(args ...string) (Valstructor, error) {
+					return Text, nil
+				}
+				return Text, nil
+
 			// other (unknown) base types
 			default:
 				return nil, fmt.Errorf("base type %s with oid %d is not implimented", name, oid)
