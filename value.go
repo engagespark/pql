@@ -374,13 +374,12 @@ func rowScanner(src interface{}, dests []Value) error {
 		panic("Should not be possible - check nil before calling rowScanner")
 	// handle case of src being a list of init vals
 	case []interface{}:
-		if len(dests) != len(srcs) {
-			return fmt.Errorf("Number of input values does not match number of Row columns. Need %d Got: %d", len(dests), len(srcs))
-		}
 		for i, vx := range dests {
-			err := vx.Scan(srcs[i])
-			if err != nil {
-				return err
+			if i < len(srcs) {
+				err := vx.Scan(srcs[i])
+				if err != nil {
+					return err
+				}
 			}
 		}
 	// normal scan ([]bytes, string, etc)
@@ -395,17 +394,15 @@ func rowScanner(src interface{}, dests []Value) error {
 		if err != nil {
 			return err
 		}
-		// check col lengths match
-		if len(parts) != len(dests) {
-			return fmt.Errorf("Number of input columns does not match number of Row columns. Need: %d Got %d parts: %v",
-				len(dests), len(parts), string(bytes.Join(parts, []byte(","))))
-		}
+
 		// parse each part
 		for i, vx := range dests {
 			// parse
-			err = vx.Scan(parts[i])
-			if err != nil {
-				return err
+			if i < len(parts) {
+				err = vx.Scan(parts[i])
+				if err != nil {
+					return err
+				}
 			}
 		}
 	}
