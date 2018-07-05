@@ -46,7 +46,7 @@ const (
 				''
 			),'') as args
 		FROM pg_attribute a JOIN pg_class pgc ON pgc.oid = a.attrelid
-		LEFT JOIN pg_index i ON pgc.oid = i.indrelid AND i.indkey[0] = a.attnum
+		LEFT JOIN pg_index i ON pgc.oid = i.indrelid AND i.indkey[0] = a.attnum AND i.indisprimary=TRUE
 		LEFT JOIN (
 			select
 				att2.attname as name,
