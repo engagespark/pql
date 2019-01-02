@@ -87,6 +87,11 @@ var typs = map[uint32]func(args ...string) (Valstructor, error){
 		}
 		return Numeric(vs[0], vs[1]), nil
 	},
+
+	// JSONB
+	3802: func(args ...string) (Valstructor, error) {
+		return Bytea, nil
+	},
 }
 
 func argsToInts(args []string, need int) (ints []int, err error) {
